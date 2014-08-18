@@ -11,8 +11,13 @@ var libpath = process.env.TAMPER_COV ? '../lib-cov' : '../lib'
 var content = 'Content to be replaced'
 
 // Replaces all occurrences of the test-content
-function replace(body) {
-  return body.replace(new RegExp(content, 'g'), 'Replaced content')
+function replace(body, req, headers, finished) {
+  updatedBody = body.replace(new RegExp(content, 'g'), 'Replaced content');
+  if(finished) {
+	finished(updatedBody)
+  } else {
+    return updatedBody
+  }
 }
 
 // A versatile handler to test the various ServerResponse methods
